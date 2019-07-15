@@ -345,6 +345,7 @@ func EnterPid(cgroupPaths map[string]string, pid int) error {
 // We trying to remove all paths five times with increasing delay between tries.
 // If after all there are not removed cgroups - appropriate error will be
 // returned.
+//
 func RemovePaths(paths map[string]string) (err error) {
 	delay := 10 * time.Millisecond
 	for i := 0; i < 5; i++ {
