@@ -348,6 +348,10 @@ func EnterPid(cgroupPaths map[string]string, pid int) error {
 //
 func RemovePaths(paths map[string]string) (err error) {
 	delay := 10 * time.Millisecond
+	for s, p := range paths {
+	   fmt.Println("s:" + s + ", p:" + p)
+	   delete(paths, s)
+	}
 	delete(paths, "memory")
 	fmt.Println("delete paths")
 	for i := 0; i < 5; i++ {
