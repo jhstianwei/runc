@@ -43,9 +43,23 @@ func destroy(c *linuxContainer) error {
 			logrus.Warn(err)
 		}
 	}
+
 	//err := c.cgroupManager.Destroy()
 	var err error
-	fmt.Println("skip destroy!!!!")
+	var skipDestroyCgroup bool
+
+	for _, item := range c.config.Labels {
+		splitArrays := strings.Split(item, "=")
+		if len(splitArrays) == 2 && splitArrays[0] == "destroyCgroup" && splitArrays[1] == "yes" {
+			skipDestroyCgroup = true
+		}
+	}
+
+	if !skipDestroyCgroup {
+		fmt.Println("skip destroy cgroup!!!")
+		err = c.cgroupManager.Destroy()
+	}
+
 	if rerr := os.RemoveAll(c.root); err == nil {
 		err = rerr
 	}
