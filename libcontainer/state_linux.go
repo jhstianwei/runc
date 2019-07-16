@@ -5,6 +5,7 @@ package libcontainer
 import (
 	"fmt"
 	"os"
+	"strings"
 	"path/filepath"
 	"syscall"
 
