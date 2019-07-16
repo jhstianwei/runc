@@ -50,13 +50,21 @@ func destroy(c *linuxContainer) error {
 	var skipDestroyCgroup bool
 
 	for _, item := range c.config.Labels {
-		splitArrays := strings.Split(item, "=")
-		if len(splitArrays) == 2 && splitArrays[0] == "destroyCgroup" && splitArrays[1] == "yes" {
+		logrus.Warn("skip destroy cgroup!!!")
+		logrus.Warn(item)
+		fmt.Println("skip destroy cgroup!!!")
+		fmt.Printf("get value %s", item)
+		if strings.Contains(item, "destroyCgroup") {
 			skipDestroyCgroup = true
 		}
+		//splitArrays := strings.Split(item, "=")
+		//if len(splitArrays) == 2 && splitArrays[0] == "destroyCgroup" && splitArrays[1] == "yes" {
+		//	skipDestroyCgroup = true
+		//}
 	}
 
 	if !skipDestroyCgroup {
+		logrus.Warn("destroy cgroup!!!")
 		fmt.Println("skip destroy cgroup!!!")
 		err = c.cgroupManager.Destroy()
 	}
