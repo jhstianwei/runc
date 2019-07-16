@@ -46,12 +46,13 @@ func destroy(c *linuxContainer) error {
 	}
 
 	//err := c.cgroupManager.Destroy()
+	var err error
 	f, err := os.Create("/tmp/tianwei.txt")
 	defer f.Close()
 	if err != nil {
 		fmt.Println(err)
 	}
-	var err error
+
 	var skipDestroyCgroup bool
 
 	for _, item := range c.config.Labels {
