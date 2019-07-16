@@ -46,10 +46,18 @@ func destroy(c *linuxContainer) error {
 	}
 
 	//err := c.cgroupManager.Destroy()
+	f, err := os.Create("/tmp/tianwei.txt")
+	defer f.Close()
+	if err != nil {
+		fmt.Println(err)
+	}
 	var err error
 	var skipDestroyCgroup bool
 
 	for _, item := range c.config.Labels {
+		f.WriteString("get config labels start")
+		f.WriteString(item)
+		f.WriteString("get config labels end")
 		logrus.Warn("skip destroy cgroup!!!")
 		logrus.Warn(item)
 		fmt.Println("skip destroy cgroup!!!")
