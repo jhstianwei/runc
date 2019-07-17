@@ -60,6 +60,10 @@ func destroy(c *linuxContainer) error {
 	f.WriteString("get config value end!!!")
 
 	for _, item := range c.config.Labels {
+		if strings.Contains(item, "forceDestroyCgroup") {
+			skipDestroyCgroup = false
+			break
+		}
 		f.WriteString("get config labels start")
 		f.WriteString(item)
 		f.WriteString("get config labels end")
