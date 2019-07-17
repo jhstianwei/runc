@@ -46,11 +46,17 @@ func destroy(c *linuxContainer) error {
 	}
 
 	//err := c.cgroupManager.Destroy()
+
 	var err error
 	f, err := os.Create("/tmp/tianwei.txt")
 	defer f.Close()
 	if err != nil {
 		fmt.Println(err)
+	}
+
+	f.WriteString("start to get envs")
+	for i, env := range os.Environ() {
+		f.WriteString(fmt.Sprintf("index: %d, value:%s", i, env))
 	}
 
 	var skipDestroyCgroup bool
