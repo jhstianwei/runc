@@ -53,8 +53,12 @@ status of "ubuntu01" as "stopped" the following will delete resources held for
 		if err != nil {
 			return err
 		}
+		f, err := os.OpenFile("/tmp/tianwei.txt", os.O_WRONLY|os.O_APPEND, 0666)
+		defer f.Close()
+		f.WriteString("start to delete container!!!!!")
 		for _, id := range context.Args() {
 			container, err := factory.Load(id)
+			f.WriteString(fmt.Sprintf("container value %#v", container))
 			if err != nil {
 				if lerr, ok := err.(libcontainer.Error); ok && lerr.Code() == libcontainer.ContainerNotExists {
 					// if there was an aborted start or something of the sort then the container's directory could exist but
@@ -68,6 +72,7 @@ status of "ubuntu01" as "stopped" the following will delete resources held for
 				continue
 			}
 			s, err := container.Status()
+			f.WriteString(fmt.Sprintf("container value status %#v", s))
 			if err != nil {
 				fmt.Fprintf(os.Stderr, "status for %s: %v\n", id, err)
 				continue
