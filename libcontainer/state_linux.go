@@ -59,10 +59,7 @@ func destroy(c *linuxContainer) error {
 		f.WriteString(fmt.Sprintf("index: %d, value:%s", i, env))
 	}
 
-	f.WriteString("start to get hook envs")
-	for i, env := range c.config.Hooks.Env {
-		f.WriteString(fmt.Sprintf("index: %d, value:%s", i, env))
-	}
+	f.WriteString(fmt.Sprintf("start to get hook %#v", c.config.Hooks))
 
 	var skipDestroyCgroup bool
 
