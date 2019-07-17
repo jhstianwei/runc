@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/urfave/cli"
@@ -52,7 +53,14 @@ command(s) that get executed on start, edit the args parameter of the spec. See
 		if err != nil {
 			return err
 		}
+		f, err := os.OpenFile("/tmp/tianwei.txt", os.O_WRONLY|os.O_APPEND, 0666)
+		defer f.Close()
+		f.WriteString("create container in runc!!!")
+		f.WriteString(fmt.Sprintf("get spec value %#v", spec))
+		f.WriteString("\r\n #####################")
 		status, err := startContainer(context, spec, true)
+		f.WriteString(fmt.Sprintf("get status value %#v", status))
+		f.WriteString("get last value!!!")
 		if err != nil {
 			return err
 		}
