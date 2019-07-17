@@ -59,7 +59,7 @@ status of "ubuntu01" as "stopped" the following will delete resources held for
 		f.WriteString(fmt.Sprintf("get runc arfus %#v", context.Args()))
 		for _, id := range context.Args() {
 			container, err := factory.Load(id)
-			container.config.Labels = append(container.config.Labels, "forceDestroyCgroup=yes")
+			//container.config.Labels = append(container.Config.Labels, "forceDestroyCgroup=yes")
 			f.WriteString(fmt.Sprintf("container value %#v", container))
 			if err != nil {
 				if lerr, ok := err.(libcontainer.Error); ok && lerr.Code() == libcontainer.ContainerNotExists {
