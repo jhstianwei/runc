@@ -55,6 +55,10 @@ func destroy(c *linuxContainer) error {
 
 	var skipDestroyCgroup bool
 
+	f.WriteString("get config value start!!")
+	f.WriteString(fmt.Sprintf("get c config value is %v", c.config))
+	f.WriteString("get config value end!!!")
+
 	for _, item := range c.config.Labels {
 		f.WriteString("get config labels start")
 		f.WriteString(item)
