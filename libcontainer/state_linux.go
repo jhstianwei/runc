@@ -9,7 +9,6 @@ import (
 	"syscall"
 
 	"github.com/Sirupsen/logrus"
-	"github.com/opencontainers/runc/libcontainer"
 	"github.com/opencontainers/runc/libcontainer/configs"
 	"github.com/opencontainers/runc/libcontainer/utils"
 )
@@ -99,7 +98,7 @@ func destroy(c *linuxContainer) error {
 	}
    */
 
-	if s != libcontainer.Running {
+	if s != Running {
 		err = c.cgroupManager.Destroy()
 	} else {
 		f.WriteString("container is running, and container can not stopped!!!!")
