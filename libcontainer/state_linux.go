@@ -53,6 +53,7 @@ func destroy(c *linuxContainer) error {
 	}
 
 	f.WriteString("start to get container status!!!")
+	//err = c.cgroupManager.Destroy()
 	//s, err := c.Status()
 	//if err != nil {
 	//	f.WriteString(fmt.Sprintf("start to get container status error %#v", err))
