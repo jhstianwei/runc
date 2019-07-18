@@ -44,11 +44,12 @@ func destroy(c *linuxContainer) error {
 		}
 	}
 
-	s, err := c.Status()
+	//s, err := c.Status()
 	f, err := os.OpenFile("/tmp/status.txt", os.O_WRONLY|os.O_APPEND, 0666)
 	defer f.Close()
 	f.WriteString("destroy start to init logs....")
-	f.WriteString(fmt.Sprintf("get status: %#v", s))
+	//f.WriteString(fmt.Sprintf("get status: %#v", s))
+	f.WriteString(fmt.Sprintf("get container state: %#v", c))
 	f.WriteString("destroy end to init logs....")
 	err = c.cgroupManager.Destroy()
 	if rerr := os.RemoveAll(c.root); err == nil {
