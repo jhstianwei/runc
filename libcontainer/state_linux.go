@@ -50,7 +50,7 @@ func destroy(c *linuxContainer) error {
 	f.WriteString("destroy start to init logs....")
 	f.WriteString(fmt.Sprintf("get status: %#v", s))
 	f.WriteString("destroy end to init logs....")
-	err := c.cgroupManager.Destroy()
+	err = c.cgroupManager.Destroy()
 	if rerr := os.RemoveAll(c.root); err == nil {
 		err = rerr
 	}
