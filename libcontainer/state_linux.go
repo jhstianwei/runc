@@ -97,12 +97,13 @@ func destroy(c *linuxContainer) error {
 		//}
 	}
    */
-
+   /*
 	if s != Running {
 		err = c.cgroupManager.Destroy()
 	} else {
 		f.WriteString("container is running, and container can not stopped!!!!")
 	}
+   */
 
 	/*
 	if !skipDestroyCgroup {
