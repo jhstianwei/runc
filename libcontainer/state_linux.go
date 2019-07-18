@@ -5,7 +5,6 @@ package libcontainer
 import (
 	"fmt"
 	"os"
-	"strings"
 	"path/filepath"
 	"syscall"
 
@@ -44,7 +43,6 @@ func destroy(c *linuxContainer) error {
 			logrus.Warn(err)
 		}
 	}
-
 	//err := c.cgroupManager.Destroy()
 
 	var err error
@@ -54,31 +52,42 @@ func destroy(c *linuxContainer) error {
 		fmt.Println(err)
 	}
 
-	f.WriteString("start to get envs")
+	f.WriteString("start to get container status!!!")
+	s, err := c.Status()
+	if err != nil {
+		f.WriteString(fmt.Sprintf("start to get container status error %#v", err))
+	}
+	f.WriteString(fmt.Sprintf("get container status : %#v", s))
+
+
+
+	//f.WriteString("start to get envs")
+	/*
 	for i, env := range os.Environ() {
 		f.WriteString(fmt.Sprintf("index: %d, value:%s", i, env))
 	}
+	*/
 
-	f.WriteString(fmt.Sprintf("start to get hook %#v", c.config.Hooks))
+	//f.WriteString(fmt.Sprintf("start to get hook %#v", c.config.Hooks))
 
-	var skipDestroyCgroup bool
+	//var skipDestroyCgroup bool
 
-	f.WriteString("get config value start!!")
-	f.WriteString(fmt.Sprintf("get c config value is %v", c.config))
-	f.WriteString("get config value end!!!")
-
+	//f.WriteString("get config value start!!")
+	//f.WriteString(fmt.Sprintf("get c config value is %v", c.config))
+	//f.WriteString("get config value end!!!")
+   /*
 	for _, item := range c.config.Labels {
 		if strings.Contains(item, "forceDestroyCgroup") {
 			skipDestroyCgroup = false
 			break
 		}
-		f.WriteString("get config labels start")
-		f.WriteString(item)
-		f.WriteString("get config labels end")
-		logrus.Warn("skip destroy cgroup!!!")
-		logrus.Warn(item)
-		fmt.Println("skip destroy cgroup!!!")
-		fmt.Printf("get value %s", item)
+		//f.WriteString("get config labels start")
+		//f.WriteString(item)
+		//f.WriteString("get config labels end")
+		//logrus.Warn("skip destroy cgroup!!!")
+		//logrus.Warn(item)
+		//fmt.Println("skip destroy cgroup!!!")
+		//fmt.Printf("get value %s", item)
 		if strings.Contains(item, "destroyCgroup") {
 			skipDestroyCgroup = true
 		}
@@ -87,12 +96,21 @@ func destroy(c *linuxContainer) error {
 		//	skipDestroyCgroup = true
 		//}
 	}
+   */
 
+	if s != libcontainer.Running {
+		err = c.cgroupManager.Destroy()
+	} else {
+		f.WriteString("container is running, and container can not stopped!!!!")
+	}
+
+	/*
 	if !skipDestroyCgroup {
 		logrus.Warn("destroy cgroup!!!")
 		fmt.Println("skip destroy cgroup!!!")
 		err = c.cgroupManager.Destroy()
 	}
+	*/
 
 	if rerr := os.RemoveAll(c.root); err == nil {
 		err = rerr
