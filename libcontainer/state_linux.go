@@ -53,11 +53,11 @@ func destroy(c *linuxContainer) error {
 	}
 
 	f.WriteString("start to get container status!!!")
-	s, err := c.Status()
-	if err != nil {
-		f.WriteString(fmt.Sprintf("start to get container status error %#v", err))
-	}
-	f.WriteString(fmt.Sprintf("get container status : %#v", s))
+	//s, err := c.Status()
+	//if err != nil {
+	//	f.WriteString(fmt.Sprintf("start to get container status error %#v", err))
+	//}
+	//f.WriteString(fmt.Sprintf("get container status : %#v", s))
 
 
 
