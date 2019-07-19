@@ -73,7 +73,7 @@ func destroy(c *linuxContainer) error {
 		f.WriteString(fmt.Sprintf("s: %s, p: %s", s, p))
 	}
 	f.WriteString("####get cgroup paths end ....")
-	err = c.cgroupManager.Destroy()
+	//err = c.cgroupManager.Destroy()
 	if rerr := os.RemoveAll(c.root); err == nil {
 		err = rerr
 	}
