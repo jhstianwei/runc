@@ -87,7 +87,7 @@ status of "ubuntu01" as "stopped" the following will delete resources held for
 			}
 			switch s {
 			case libcontainer.Stopped:
-				//destroy(container)
+				destroy(container)
 			case libcontainer.Created:
 				f.WriteString("container status is Created, and container should not be stop!!!")
 				err := killContainer(container)
