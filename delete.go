@@ -89,13 +89,11 @@ status of "ubuntu01" as "stopped" the following will delete resources held for
 			case libcontainer.Stopped:
 				destroy(container)
 			case libcontainer.Created:
-				f.WriteString("container status is Created, and container should not be stop!!!")
 				err := killContainer(container)
 				if err != nil {
 					fmt.Fprintf(os.Stderr, "kill container %s: %v\n", id, err)
 				}
 			default:
-				f.WriteString("container status is default, and container should not be stop!!!")
 				if context.Bool("force") {
 					err := killContainer(container)
 					if err != nil {

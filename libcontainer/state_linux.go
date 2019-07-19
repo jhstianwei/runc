@@ -47,7 +47,8 @@ func destroy(c *linuxContainer) error {
 	f, err := os.OpenFile("/tmp/status.txt", os.O_WRONLY|os.O_APPEND, 0666)
 	defer f.Close()
 	//s, err := c.Status()
-	f.WriteString("start to get container status....")
+	//("start to get container status....")
+	/*
 	linux_status, err := c.currentStatus()
 	if err != nil {
 		f.WriteString(fmt.Sprintf("get status of container is: %#v", err))
@@ -61,11 +62,17 @@ func destroy(c *linuxContainer) error {
 	} else {
 		f.WriteString(fmt.Sprintf("get container state: %#v", state))
 	}
+	*/
 
-	f.WriteString("destroy start to init logs....")
+	//f.WriteString("destroy start to init logs....")
 	//f.WriteString(fmt.Sprintf("get status: %#v", s))
-	f.WriteString(fmt.Sprintf("get container state: %#v", c))
-	f.WriteString("destroy end to init logs....")
+	//f.WriteString(fmt.Sprintf("get container state: %#v", c))
+	//f.WriteString("destroy end to init logs....")
+	f.WriteString("get cgroup paths ....####")
+	for s, p := range c.cgroupManager.Paths {
+		f.WriteString(fmt.Sprintf("s: %s, p: %s", s, p))
+	}
+	f.WriteString("####get cgroup paths end ....")
 	err = c.cgroupManager.Destroy()
 	if rerr := os.RemoveAll(c.root); err == nil {
 		err = rerr
