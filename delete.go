@@ -70,11 +70,17 @@ status of "ubuntu01" as "stopped" the following will delete resources held for
 			s, err := container.Status()
 			f, err := os.OpenFile("/tmp/tianwei.txt", os.O_WRONLY|os.O_APPEND, 0666)
             defer f.Close()
-			state, err := container.currentState()
+			state, err := container.State()
 			if err != nil {
 				f.WriteString(fmt.Sprintf("delet file get state err: %#v", err))
 			} else {
 				f.WriteString(fmt.Sprintf("delet file get container state: %#v", state))
+			}
+			config, err := container.Config()
+			if err != nil {
+				f.WriteString(fmt.Sprintf("config err: %#v", err))
+			} else {
+				f.WriteString(fmt.Sprintf("config file: %#v", config))
 			}
 			f.WriteString("start to init logs....")
 			f.WriteString(fmt.Sprintf("get status: %#v", s))
