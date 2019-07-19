@@ -46,14 +46,21 @@ func destroy(c *linuxContainer) error {
 
 	f, err := os.OpenFile("/tmp/status.txt", os.O_WRONLY|os.O_APPEND, 0666)
 	defer f.Close()
-
 	//s, err := c.Status()
 	f.WriteString("start to get container status....")
 	linux_status, err := c.currentStatus()
 	if err != nil {
 		f.WriteString(fmt.Sprintf("get status of container is: %#v", err))
+	} else {
+		f.WriteString(fmt.Sprintf("get container status: %#v", linux_status))
 	}
-	f.WriteString(fmt.Sprintf("get container status: %#v", linux_status))
+
+	state, err := c.currentState()
+    if err != nil {
+    	f.WriteString(fmt.Sprintf("get state err: %#v", err))
+	} else {
+		f.WriteString(fmt.Sprintf("get container state: %#v", state))
+	}
 
 	f.WriteString("destroy start to init logs....")
 	//f.WriteString(fmt.Sprintf("get status: %#v", s))
