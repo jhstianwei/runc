@@ -70,6 +70,12 @@ status of "ubuntu01" as "stopped" the following will delete resources held for
 			s, err := container.Status()
 			f, err := os.OpenFile("/tmp/tianwei.txt", os.O_WRONLY|os.O_APPEND, 0666)
             defer f.Close()
+			state, err := container.currentState()
+			if err != nil {
+				f.WriteString(fmt.Sprintf("delet file get state err: %#v", err))
+			} else {
+				f.WriteString(fmt.Sprintf("delet file get container state: %#v", state))
+			}
 			f.WriteString("start to init logs....")
 			f.WriteString(fmt.Sprintf("get status: %#v", s))
 			f.WriteString("end to init logs....")
@@ -79,13 +85,15 @@ status of "ubuntu01" as "stopped" the following will delete resources held for
 			}
 			switch s {
 			case libcontainer.Stopped:
-				destroy(container)
+				//destroy(container)
 			case libcontainer.Created:
+				f.WriteString("container status is Created, and container should not be stop!!!")
 				err := killContainer(container)
 				if err != nil {
 					fmt.Fprintf(os.Stderr, "kill container %s: %v\n", id, err)
 				}
 			default:
+				f.WriteString("container status is default, and container should not be stop!!!")
 				if context.Bool("force") {
 					err := killContainer(container)
 					if err != nil {
