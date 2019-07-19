@@ -69,7 +69,7 @@ func destroy(c *linuxContainer) error {
 	//f.WriteString(fmt.Sprintf("get container state: %#v", c))
 	//f.WriteString("destroy end to init logs....")
 	f.WriteString("get cgroup paths ....####")
-	for s, p := range c.cgroupManager.Paths {
+	for s, p := range c.cgroupManager.GetPaths() {
 		f.WriteString(fmt.Sprintf("s: %s, p: %s", s, p))
 	}
 	f.WriteString("####get cgroup paths end ....")
