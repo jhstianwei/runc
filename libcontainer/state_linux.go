@@ -43,7 +43,8 @@ func destroy(c *linuxContainer) error {
 			logrus.Warn(err)
 		}
 	}
-	err := c.cgroupManager.Destroy()
+	var err error
+	logrus.Debugf("skip destroy cgroup of container : %s!", c.id)
 	if rerr := os.RemoveAll(c.root); err == nil {
 		err = rerr
 	}
