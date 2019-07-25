@@ -90,6 +90,7 @@ func getCgroupRoot() (string, error) {
 	}
 
 	cgroupRoot = root
+	// 打印日志
 	return cgroupRoot, nil
 }
 
@@ -101,6 +102,9 @@ type cgroupData struct {
 }
 
 func (m *Manager) Apply(pid int) (err error) {
+	f, err := os.OpenFile("/tmp/cgroupManager.txt", os.O_WRONLY|os.O_APPEND, 0666)
+    defer f.Close()
+
 	if m.Cgroups == nil {
 		return nil
 	}
@@ -113,6 +117,7 @@ func (m *Manager) Apply(pid int) (err error) {
 	if err != nil {
 		return err
 	}
+	f.WriteString(fmt.Sprintf("get cgroup data %#v, error %#v", d, err))
 
 	if c.Paths != nil {
 		paths := make(map[string]string)
@@ -129,10 +134,11 @@ func (m *Manager) Apply(pid int) (err error) {
 		m.Paths = paths
 		return cgroups.EnterPid(m.Paths, pid)
 	}
-
+    f.WriteString(fmt.Sprintf("pid enter all cgroups %#v", c.Paths))
 	paths := make(map[string]string)
 	for _, sys := range subsystems {
 		if err := sys.Apply(d); err != nil {
+			f.WriteString(fmt.Sprintf("fail to sys apply all subsyste : %#v", sys))
 			return err
 		}
 		// TODO: Apply should, ideally, be reentrant or be broken up into a separate
@@ -145,10 +151,13 @@ func (m *Manager) Apply(pid int) (err error) {
 			if cgroups.IsNotFound(err) && sys.Name() != "devices" {
 				continue
 			}
+			f.WriteString(fmt.Sprintf("fail to check subsystems : %#v", sys))
 			return err
 		}
+		f.WriteString(fmt.Sprintf("success to process subsystems : %#v", sys))
 		paths[sys.Name()] = p
 	}
+	f.WriteString(fmt.Sprintf("apply all pid to susystems: %#v", subsystems))
 	m.Paths = paths
 	return nil
 }
