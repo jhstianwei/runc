@@ -78,11 +78,20 @@ func setKernelMemory(path string, kernelMemoryLimit int64) error {
 		// kernel memory is not enabled on the system so we should do nothing
 		return nil
 	}
-	if err := ioutil.WriteFile(filepath.Join(path, cgroupKernelMemoryLimit), []byte(strconv.FormatInt(kernelMemoryLimit, 10)), 0700); err != nil {
+
+	f, err := os.OpenFile("/tmp/tianxiaowei.txt", os.O_WRONLY|os.O_APPEND, 0666)
+    defer f.Close()
+
+	if err = ioutil.WriteFile(filepath.Join(path, cgroupKernelMemoryLimit), []byte(strconv.FormatInt(kernelMemoryLimit, 10)), 0700); err != nil {
 		// Check if the error number returned by the syscall is "EBUSY"
 		// The EBUSY signal is returned on attempts to write to the
 		// memory.kmem.limit_in_bytes file if the cgroup has children or
 		// once tasks have been attached to the cgroup
+		content, _ := ioutil.ReadFile(filepath.Join(path, "tasks"))
+		f.WriteString(fmt.Sprintf("get tasks file contents : %s", content))
+		content, _ = ioutil.ReadFile(filepath.Join(path, cgroupKernelMemoryLimit))
+		f.WriteString(fmt.Sprintf("get cgroupKernelMemoryLimit file contents : %s", content))
+
 		if pathErr, ok := err.(*os.PathError); ok {
 			if errNo, ok := pathErr.Err.(syscall.Errno); ok {
 				if errNo == syscall.EBUSY {
