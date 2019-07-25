@@ -39,11 +39,12 @@ type containerState interface {
 
 func destroy(c *linuxContainer) error {
 	if !c.config.Namespaces.Contains(configs.NEWPID) {
-		if err := killCgroupProcesses(c.cgroupManager); err != nil {
+		if err := signalAllProcesses(c.cgroupManager, syscall.SIGKILL); err != nil {
 			logrus.Warn(err)
 		}
 	}
-	err := c.cgroupManager.Destroy()
+	var err error
+	//err := c.cgroupManager.Destroy()
 	if rerr := os.RemoveAll(c.root); err == nil {
 		err = rerr
 	}
