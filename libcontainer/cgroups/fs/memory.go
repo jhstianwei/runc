@@ -16,7 +16,9 @@ import (
 	"github.com/opencontainers/runc/libcontainer/configs"
 )
 
-const cgroupKernelMemoryLimit = "memory.kmem.limit_in_bytes"
+const (
+	cgroupKernelMemoryLimit = "memory.kmem.limit_in_bytes"
+)
 
 type MemoryGroup struct {
 }
@@ -36,10 +38,8 @@ func (s *MemoryGroup) Apply(d *cgroupData) (err error) {
 				return err
 			}
 		}
-		if d.config.KernelMemory != 0 {
-			if err := EnableKernelMemoryAccounting(path); err != nil {
-				return err
-			}
+		if err := EnableKernelMemoryAccounting(path); err != nil {
+			return err
 		}
 	}
 	defer func() {
